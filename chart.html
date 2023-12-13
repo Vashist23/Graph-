@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Sales Data Visualization</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Include FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-6 rounded shadow-md max-w-md">
+        <h1 class="text-2xl font-semibold mb-4">Student Sem Analysis</h1>
+
+        <!-- Chart Type Selector (Switchable Buttons with Icons) -->
+        <div class="mb-4 flex space-x-2">
+            <button id="lineChartBtn" class="px-4 py-2 rounded-md bg-blue-500 text-white">
+                <i class="fas fa-chart-line"></i> 
+            </button>
+            <button id="barChartBtn" class="px-4 py-2 rounded-md bg-blue-500 text-white">
+                <i class="fas fa-chart-bar"></i> 
+            </button>
+            <button id="pieChartBtn" class="px-4 py-2 rounded-md bg-blue-500 text-white">
+                <i class="fas fa-chart-pie"></i>
+            </button>
+            <button id="stackedAreaChartBtn" class="px-4 py-2 rounded-md bg-blue-500 text-white">
+                <i class="fas fa-chart-area"></i> 
+            </button>
+            <button id="lineClusteredColumnChartBtn" class="px-4 py-2 rounded-md bg-blue-500 text-white">
+                <i class="fas fa-chart-line"></i>
+            </button>
+            <button id="donutChartBtn" class="px-4 py-2 rounded-md bg-blue-500 text-white">
+                <i class="fas fa-chart-pie"></i> 
+            </button>
+        </div>
+
+        <!-- Chart Container -->
+        <div id="chartContainer" class="bg-gray-200 p-4 rounded-lg"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        // Sample data
+        const subjects = ["DM", "COA", "DS", "OOP", "DPA","DSLAB", "OOPLAB", "DPALAB", "GS"];
+        const marks = [60,70,54,58,73,90,90,93,75];
+        const lineChartBtn = document.getElementById("lineChartBtn");
+        const barChartBtn = document.getElementById("barChartBtn");
+        const pieChartBtn = document.getElementById("pieChartBtn");
+        const stackedAreaChartBtn = document.getElementById("stackedAreaChartBtn");
+        const lineClusteredColumnChartBtn = document.getElementById("lineClusteredColumnChartBtn");
+        const donutChartBtn = document.getElementById("donutChartBtn");
+        const chartContainer = document.getElementById("chartContainer");
+        let chart; // Initialize chart variable
+
+        function setupLineChart() {
+            chart = new ApexCharts(chartContainer, {
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                xaxis: {
+                    categories: subjects,
+                },
+                series: [{
+                    name: "marks",
+                    data: marks,
+                }],
+            });
+            chart.render();
+        }
+
+        function setupBarChart() {
+            chart = new ApexCharts(chartContainer, {
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                xaxis: {
+                    categories: subjects,
+                },
+                series: [{
+                    name: "marks",
+                    data: marks,
+                }],
+            });
+            chart.render();
+        }
+
+        function setupPieChart() {
+            // Initialize the pie chart with correct data format
+            chart = new ApexCharts(chartContainer, {
+                chart: {
+                    type: 'pie',
+                    height: 350,
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                labels: subjects,
+                series: marks,
+            });
+            chart.render();
+        }
+
+        function setupStackedAreaChart() {
+            chart = new ApexCharts(chartContainer, {
+                chart: {
+                    type: 'area',
+                    stacked: true,
+                    height: 350,
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                xaxis: {
+                    categories:subjects,
+                },
+                series: [{
+                    name: "marks",
+                    data: marks,
+                }],
+            });
+            chart.render();
+        }
+
+        function setupLineClusteredColumnChart() {
+            chart = new ApexCharts(chartContainer, {
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                xaxis: {
+                    categories:subjects,
+                },
+                series: [{
+                    name: "marks",
+                    data: marks,
+                }],
+                dataLabels: {
+                    enabled: true,
+                },
+                stroke: {
+                    width: [2, 2],
+                },
+            });
+            chart.render();
+        }
+
+        function setupDonutChart() {
+            // Initialize the donut chart with correct data format
+           
+            chart = new ApexCharts(chartContainer, {
+                chart: {
+                    type: 'donut',
+                    height: 350,
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                labels: subjects,
+                series: marks,
+            });
+            chart.render();
+        }
+
+        // Initialize with a line chart
+        setupLineChart();
+
+        // Event listeners for chart type buttons
+        lineChartBtn.addEventListener('click', () => {
+            chart.destroy();
+            setupLineChart();
+            lineChartBtn.classList.add("bg-blue-500");
+            lineChartBtn.classList.remove("bg-gray-300");
+            barChartBtn.classList.add("bg-gray-300");
+            barChartBtn.classList.remove("bg-blue-500");
+            pieChartBtn.classList.add("bg-gray-300");
+            pieChartBtn.classList.remove("bg-blue-500");
+            stackedAreaChartBtn.classList.add("bg-gray-300");
+            stackedAreaChartBtn.classList.remove("bg-blue-500");
+            lineClusteredColumnChartBtn.classList.add("bg-gray-300");
+            lineClusteredColumnChartBtn.classList.remove("bg-blue-500");
+            donutChartBtn.classList.add("bg-gray-300");
+            donutChartBtn.classList.remove("bg-blue-500");
+        });
+
+        barChartBtn.addEventListener('click', () => {
+            chart.destroy();
+            setupBarChart();
+            
+            barChartBtn.classList.add("bg-blue-500");
+            barChartBtn.classList.remove("bg-gray-300");
+            lineChartBtn.classList.add("bg-gray-300");
+            lineChartBtn.classList.remove("bg-blue-500");
+            pieChartBtn.classList.add("bg-gray-300");
+            pieChartBtn.classList.remove("bg-blue-500");
+            stackedAreaChartBtn.classList.add("bg-gray-300");
+            stackedAreaChartBtn.classList.remove("bg-blue-500");
+            lineClusteredColumnChartBtn.classList.add("bg-gray-300");
+            lineClusteredColumnChartBtn.classList.remove("bg-blue-500");
+            donutChartBtn.classList.add("bg-gray-300");
+            donutChartBtn.classList.remove("bg-blue-500");
+        });
+
+        pieChartBtn.addEventListener('click', () => {
+            chart.destroy();
+            setupPieChart();
+           
+            pieChartBtn.classList.add("bg-blue-500");
+            pieChartBtn.classList.remove("bg-gray-300");
+            lineChartBtn.classList.add("bg-gray-300");
+            lineChartBtn.classList.remove("bg-blue-500");
+            barChartBtn.classList.add("bg-gray-300");
+            barChartBtn.classList.remove("bg-blue-500");
+            stackedAreaChartBtn.classList.add("bg-gray-300");
+            stackedAreaChartBtn.classList.remove("bg-blue-500");
+            lineClusteredColumnChartBtn.classList.add("bg-gray-300");
+            lineClusteredColumnChartBtn.classList.remove("bg-blue-500");
+            donutChartBtn.classList.add("bg-gray-300");
+            donutChartBtn.classList.remove("bg-blue-500");
+        });
+
+        stackedAreaChartBtn.addEventListener('click', () => {
+            chart.destroy();
+            setupStackedAreaChart();
+            
+            stackedAreaChartBtn.classList.add("bg-blue-500");
+            stackedAreaChartBtn.classList.remove("bg-gray-300");
+            lineChartBtn.classList.add("bg-gray-300");
+            lineChartBtn.classList.remove("bg-blue-500");
+            barChartBtn.classList.add("bg-gray-300");
+            barChartBtn.classList.remove("bg-blue-500");
+            pieChartBtn.classList.add("bg-gray-300");
+            pieChartBtn.classList.remove("bg-blue-500");
+            lineClusteredColumnChartBtn.classList.add("bg-gray-300");
+            lineClusteredColumnChartBtn.classList.remove("bg-blue-500");
+            donutChartBtn.classList.add("bg-gray-300");
+            donutChartBtn.classList.remove("bg-blue-500");
+        });
+
+        lineClusteredColumnChartBtn.addEventListener('click', () => {
+            chart.destroy();
+            setupLineClusteredColumnChart();
+            lineClusteredColumnChartBtn.classList.add("bg-blue-500");
+            lineClusteredColumnChartBtn.classList.remove("bg-gray-300");
+            lineChartBtn.classList.add("bg-gray-300");
+            lineChartBtn.classList.remove("bg-blue-500");
+            barChartBtn.classList.add("bg-gray-300");
+            barChartBtn.classList.remove("bg-blue-500");
+            pieChartBtn.classList.add("bg-gray-300");
+            pieChartBtn.classList.remove("bg-blue-500");
+            stackedAreaChartBtn.classList.add("bg-gray-300");
+            stackedAreaChartBtn.classList.remove("bg-blue-500");
+            donutChartBtn.classList.add("bg-gray-300");
+            donutChartBtn.classList.remove("bg-blue-500");
+        });
+
+        donutChartBtn.addEventListener('click', () => {
+            chart.destroy();
+            setupDonutChart();
+            donutChartBtn.classList.add("bg-gray-300");
+            donutChartBtn.classList.remove("bg-blue-500");
+            lineChartBtn.classList.add("bg-gray-300");
+            lineChartBtn.classList.remove("bg-blue-500");
+            barChartBtn.classList.add("bg-gray-300");
+            barChartBtn.classList.remove("bg-blue-500");
+            pieChartBtn.classList.add("bg-gray-300");
+            pieChartBtn.classList.remove("bg-blue-500");
+            stackedAreaChartBtn.classList.add("bg-gray-300");
+            stackedAreaChartBtn.classList.remove("bg-blue-500");
+            lineClusteredColumnChartBtn.classList.add("bg-blue-500");
+            lineClusteredColumnChartBtn.classList.remove("bg-gray-300");
+        });
+    </script>
+</body>
+</html>
